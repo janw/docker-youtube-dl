@@ -1,0 +1,23 @@
+#!/usr/bin/with-contenv bash
+
+UMASK_SET=${UMASK_SET:-022}
+umask "$UMASK_SET"
+
+
+schedule=${SCHEDULE:-'15 0 * * 0'}
+args=${ADDITIONAL_ARGS:-}
+
+test -r /config/batch.txt || (echo "/config/batch.txt must exist and contain downloadable URLs" && exit 1)
+test -r /config/config.txt || (echo "/config/config.txt must exist and contain youtube-dl config" && exit 1)
+test -w "/downloads" || echo "/downloads is not writable, please fix its ownership and/or permissions"
+
+echo "Youtube-dl version:   $(youtube-dl --version)"
+echo "Python version:       $(python --version 2>&1 | cut -d " " -f 2)"
+echo "FFMPEG version:       $(ffmpeg -version | head -n 1 | cut -d' ' -f3)"
+echo "Cron schedule:        ${schedule}"
+echo "Additional arguments: ${args}"
+
+declare -p | grep -Ev 'BASH|EUID|PPID|SHELLOPTS|UID|YDL_SIGNING_KEY' > /tmp/cron.env
+echo -e "SHELL=/bin/bash\nBASH_ENV=/tmp/cron.env\n${schedule} bash /entrypoint.sh ${args}" > /etc/crontabs/abc
+touch /tmp/healthy && chown abc /tmp/healthy
+exec crond -f -d 8

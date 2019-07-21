@@ -1,0 +1,4 @@
+--download-archive "/downloads/archive.log"
+
+# Ignore errors
+-i
