@@ -1,11 +1,12 @@
 --download-archive "/downloads/archive.log"
-
--i
-
+--ignore-errors
 --write-info-json
 
---match-filter "playlist_title != 'Liked videos' & playlist_title != 'Favorites'"
+# Download best format available
+-f "(bestvideo+bestaudio/best)"
 
--f "(bestvideo[vcodec^=av01][height>=1080][fps>30]/bestvideo[vcodec=vp9.2][height>=1080][fps>30]/bestvideo[vcodec=vp9][height>=1080][fps>30]/bestvideo[vcodec^=av01][height>=1080]/bestvideo[vcodec=vp9.2][height>=1080]/bestvideo[vcodec=vp9][height>=1080]/bestvideo[height>=1080]/bestvideo[vcodec^=av01][height>=720][fps>30]/bestvideo[vcodec=vp9.2][height>=720][fps>30]/bestvideo[vcodec=vp9][height>=720][fps>30]/bestvideo[vcodec^=av01][height>=720]/bestvideo[vcodec=vp9.2][height>=720]/bestvideo[vcodec=vp9][height>=720]/bestvideo[height>=720]/bestvideo)+(bestaudio[acodec=opus]/bestaudio)/best"
+# Always merge to MKV
+--merge-output-format mkv
 
---merge-output-format mkv -o "/downloads/%%(playlist_uploader)s/%%(playlist)s/%%(playlist_index)s - %%(title)s - %%(id)s.%%(ext)s"
+# Subdir per channel, release-date prefixed filenames
+--output "/downloads/%(channel)s/%(release_date)s - %(title)s - %(id)s.%(ext)s"

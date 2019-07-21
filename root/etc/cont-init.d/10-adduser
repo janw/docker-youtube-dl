@@ -15,6 +15,6 @@ User uid:    $(id -u abc)
 User gid:    $(id -g abc)
 -------------------------------------
 "
-chown abc:abc /config
-chown abc:abc /downloads
-chown abc:abc /defaults
+chown -R abc:abc /config
+chown -R abc:abc /downloads
+chown -R abc:abc /defaults
