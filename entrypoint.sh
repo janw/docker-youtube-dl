@@ -12,7 +12,7 @@ fi
 youtube-dl \
     --config-location /config/config.txt \
     --batch-file /config/batch.txt $@ 2>&1 | \
-    tee /downloads/download.log) &
+    tee /downloads/download.log &
 
 echo $! > "$PIDFILE"
 chmod 644 "$PIDFILE"
