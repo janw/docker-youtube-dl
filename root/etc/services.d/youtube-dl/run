@@ -28,4 +28,8 @@ Additional arguments: ${args}
 
 declare -p | grep -Ev 'BASH|EUID|PPID|SHELLOPTS|UID|YDL_SIGNING_KEY' > /tmp/cron.env
 echo -e "SHELL=/bin/bash\nBASH_ENV=/tmp/cron.env\n${schedule} bash /entrypoint.sh ${args}" > /etc/crontabs/abc
+
+# Run first download job right away
+bash /entrypoint.sh &
+
 exec crond -f -d 8
